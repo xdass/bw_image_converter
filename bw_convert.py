@@ -22,9 +22,9 @@ def main():
     for image in original_images:
         images_queue.put(image)
     while not images_queue.empty():
-        with ProcessPoolExecutor(max_workers=4) as executor:
-            path = images_queue.get()
-            executor.submit(convert_image(path))
+        with ProcessPoolExecutor(max_workers=8) as executor:
+            while not images_queue.empty():
+                executor.submit(convert_image, images_queue.get())
     print(timeit.default_timer() - t1)
 
 if __name__ == '__main__':
