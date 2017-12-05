@@ -21,9 +21,9 @@ def main():
     original_images = get_images()
     for image in original_images:
         images_queue.put(image)
-    while not images_queue.empty():
-        with ProcessPoolExecutor(max_workers=2) as executor:
-            executor.submit(convert_image, images_queue.get())
+    with ProcessPoolExecutor(max_workers=4) as executor:
+        for image_path in original_images:
+            executor.submit(convert_image, image_path)
     print(timeit.default_timer() - t1)
 
 if __name__ == '__main__':
